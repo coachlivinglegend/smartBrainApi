@@ -47,9 +47,7 @@ const database = {
     ]
 }
 
-app.get('/', (req, res) => {
-    res.send(database)
-})
+app.get('/', (req, res) => res.send('it is working'))
 
 
 
