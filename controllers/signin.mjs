@@ -9,17 +9,25 @@ const handleSignIn = (req, res, db, bcrypt) => {
     .then(data => {
         const isValid = bcrypt.compareSync(password, data[0].hash);
         if (isValid) {
-            return db.select('*').from('users')
-            .where('email', '=', email)
+            return db.raw(`(select * from (
+                SELECT
+                  RANK() OVER(ORDER BY entries DESC) AS rank,
+                  id,
+                  name,
+                  email,
+                  entries,
+                  joined
+                FROM users ) as foo
+            where email = '${email}')`)           
             .then(user => {
-                res.json(user[0])
+                res.json(user.rows[0])
             })
             .catch(err => res.status(404).json('error loggin in'))
         } else {
-            res.status(404).json('error loggin in')
+            res.status(404).json('incorrect password')
         }
     })
-    .catch(err => res.status(404).json('error loggin in'))
+    .catch(err => res.status(404).json('incorrect email'))
     // for (let user of database.users) {
     //     if (email === user.email && bcrypt.compareSync(password, user.password)) {
     //         const thisUser = {

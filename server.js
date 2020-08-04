@@ -18,8 +18,18 @@ const db = knex({
     }
 });
 
+// const db = knex({
+//     client: 'pg',
+//     connection: {
+//         host: '127.0.0.1',
+//         user: 'postgres',
+//         password: 'test',
+//         database: 'smartbrain'
+//     }
+// });
 
 const app = express();
+
 
 app.use(express.json());
 app.use(cors())
@@ -47,3 +57,6 @@ app.listen(process.env.PORT || 3000, ()=> {
     console.log(`app is running on port ${process.env.PORT}`)
 })
 
+// app.listen(3000, ()=> {
+//     console.log(`app is running on port 3000`)
+// })
